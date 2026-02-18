@@ -15,55 +15,88 @@
   <div id="status">Loading...</div>
   <div id="error" class="error"></div>
   <div id="output"></div>
-
+  
+  <!---------------- JavaScript ---------------->
+  <script type="text/javascript" src="js/chart.min.js"></script>
   <script>
-    async function getPsData(username, days = 30) {
+    async function getStorm(username, days = 365) {
       const url = `https://lichess.org/api/storm/dashboard/${encodeURIComponent(username)}?days=${days}`;
-      const res = await fetch(url, { method: "GET" });
+      const res = await fetch(url);
       if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
       return res.json();
     }
 
+    function parseYMDWithSlashesToUTC(dateString) {
+      // "2026/2/18" -> Date at UTC midnight
+      const [y, m, d] = dateString.split("/").map(Number);
+      return new Date(Date.UTC(y, m - 1, d));
+    }
+
+    function buildPoints(days) {
+      return [...days]
+        .map(d => ({
+          x: parseYMDWithSlashesToUTC(d._id),
+          y: d.score
+        }))
+        .sort((a, b) => a.x - b.x);
+    }
+
     async function run() {
-      const username = "srirachachacha";
+      const username = "srirachachacha"; // Eventually need to make dynamic via form field
       const statusEl = document.getElementById("status");
-      const errorEl = document.getElementById("error");
-      const outputEl = document.getElementById("output");
 
       try {
-        const data = await getPsData(username, 30);
+        const data = await getStorm(username, 365);
 
-        console.log("Raw API response:", data);
-
-        statusEl.textContent = `Loaded data for ${username}`;
-
-        if (!data.days || data.days.length === 0) {
-          outputEl.textContent = "No daily history returned.";
+        if (!data.days?.length) {
+          statusEl.textContent = `No history returned for ${username}`;
           return;
         }
 
-        // Sort by date ascending (just in case)
-        const sorted = [...data.days].sort((a, b) => 
-          new Date(a._id) - new Date(b._id)
-        );
+        const points = buildPoints(data.days);
+        statusEl.textContent = `Loaded ${points.length} day(s) for ${username}`;
 
-        const table = document.createElement("table");
-        const header = document.createElement("tr");
-        header.innerHTML = "<th>Date</th><th>Score</th>";
-        table.appendChild(header);
+        const ctx = document.getElementById("chart");
 
-        sorted.forEach(d => {
-          const row = document.createElement("tr");
-          row.innerHTML = `<td>${d._id}</td><td>${d.score}</td>`;
-          table.appendChild(row);
+        new Chart(ctx, {
+          type: "line",
+          data: {
+            datasets: [{
+              label: `${username} - daily top score`,
+              data: points,
+              pointRadius: 2,
+              borderWidth: 2,
+              tension: 0.2
+            }]
+          },
+          options: {
+            parsing: false, // we're already providing {x,y}
+            responsive: true,
+            scales: {
+              x: {
+                type: "time",
+                time: { unit: "day" },
+                title: { display: true, text: "Date" }
+              },
+              y: {
+                beginAtZero: true,
+                title: { display: true, text: "Score" }
+              }
+            },
+            plugins: {
+              legend: { display: true },
+              tooltip: {
+                callbacks: {
+                  label: (ctx) => `Score: ${ctx.parsed.y}`
+                }
+              }
+            }
+          }
         });
 
-        outputEl.appendChild(table);
-
       } catch (err) {
-        console.error("Fetch failed:", err);
-        statusEl.textContent = "Request failed";
-        errorEl.textContent = err.message + " (Check console for CORS details)";
+        console.error(err);
+        statusEl.textContent = `Request failed: ${err.message}`;
       }
     }
 
