@@ -69,12 +69,12 @@
 <body>
 
 <div class="header">
-  <span style="font-size:1.8rem">⚡</span>
+  <span style="font-size:1.8rem">♔</span>
   <h1>Puzzle <span>Storm</span> Visualizer</h1>
 </div>
 
 <div class="search-row">
-  <input type="text" id="username" placeholder="Enter Lichess username…" autocomplete="off" />
+  <input type="text" id="username" placeholder="" value="srirachachacha" autocomplete="off" />
   <button id="fetchBtn" onclick="fetchData()">Analyze</button>
 </div>
 <div class="error" id="error"></div>
@@ -84,10 +84,10 @@
 <div id="mainPanel" class="hidden">
   <div class="controls">
     <div class="range-btns">
-      <button class="range-btn" onclick="setRange(90)">3M</button>
-      <button class="range-btn" onclick="setRange(180)">6M</button>
-      <button class="range-btn" onclick="setRange(365)">1Y</button>
-      <button class="range-btn active" onclick="setRange(null)">All</button>
+      <button class="range-btn" onclick="setRange(90); renderChart()">3M</button>
+      <button class="range-btn" onclick="setRange(180); renderChart()">6M</button>
+      <button class="range-btn" onclick="setRange(365); renderChart()">1Y</button>
+      <button class="range-btn" onclick="setRange(null); renderChart()">All</button>
     </div>
     <label>From <input type="date" id="dateFrom" onchange="renderChart()"></label>
     <label>To <input type="date" id="dateTo" onchange="renderChart()"></label>
@@ -157,10 +157,11 @@ async function fetchData() {
       };
     }).sort((a, b) => a.date - b.date);
 
-    setRange(null, true);
     renderStats(json.allTime ?? json);
-    document.getElementById('mainPanel').classList.remove('hidden');
+    setRange(null);
     document.getElementById('statsRow').classList.remove('hidden');
+    document.getElementById('mainPanel').classList.remove('hidden');
+    renderChart();
   } catch (e) {
     err.textContent = e.message;
     err.style.display = 'block';
@@ -187,7 +188,7 @@ function renderStats(allTime) {
   `;
 }
 
-function setRange(days, skipRender) {
+function setRange(days) {
   document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active'));
   const i = days === 90 ? 0 : days === 180 ? 1 : days === 365 ? 2 : 3;
   document.querySelectorAll('.range-btn')[i].classList.add('active');
@@ -195,7 +196,6 @@ function setRange(days, skipRender) {
   const from = days ? new Date(to - days * 86400000) : null;
   document.getElementById('dateFrom').value = from ? from.toISOString().split('T')[0] : '';
   document.getElementById('dateTo').value = '';
-  if (!skipRender) renderChart();
 }
 
 function setMetric(m, btn) {
@@ -287,6 +287,9 @@ function renderChart() {
 document.getElementById('username').addEventListener('keydown', e => {
   if (e.key === 'Enter') fetchData();
 });
+
+window.addEventListener('load', () => fetchData());
+
 </script>
 </body>
 </html>
