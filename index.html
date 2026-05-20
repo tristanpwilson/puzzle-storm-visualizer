@@ -1,109 +1,292 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Lichess Storm Test</title>
-  <style>
-    body { font-family: sans-serif; padding: 20px; }
-    table { border-collapse: collapse; margin-top: 20px; }
-    td, th { border: 1px solid #ccc; padding: 6px 10px; }
-    .error { color: red; margin-top: 20px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Puzzle Storm Visualizer</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0f1117; --surface: #1a1d27; --surface2: #22263a;
+    --border: #2e3350; --accent: #7c6ff7; --accent2: #5eead4;
+    --text: #e8eaf6; --muted: #7b82a0; --danger: #f87171;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; padding: 32px 24px; }
+  h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px; }
+  h1 span { color: var(--accent); }
+  .header { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
+  .search-row { display: flex; gap: 10px; margin-bottom: 28px; }
+  .search-row input {
+    flex: 1; background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); border-radius: 10px; padding: 12px 16px;
+    font-size: 1rem; outline: none; transition: border-color 0.2s;
+  }
+  .search-row input:focus { border-color: var(--accent); }
+  .search-row input::placeholder { color: var(--muted); }
+  .search-row button {
+    background: var(--accent); color: #fff; border: none; border-radius: 10px;
+    padding: 12px 22px; font-size: 0.95rem; font-weight: 600; cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s; white-space: nowrap;
+  }
+  .search-row button:hover { opacity: 0.88; }
+  .search-row button:active { transform: scale(0.97); }
+  .search-row button:disabled { opacity: 0.45; cursor: not-allowed; }
+  .error { color: var(--danger); font-size: 0.9rem; margin-bottom: 16px; display: none; background: #f871711a; border: 1px solid #f8717133; border-radius: 8px; padding: 10px 14px; }
+  .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+  .stat-card .label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 6px; }
+  .stat-card .value { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+  .stat-card .value.teal { color: var(--accent2); }
+  .controls { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; align-items: center; }
+  .controls label { font-size: 0.82rem; color: var(--muted); }
+  .controls input[type="date"] {
+    background: var(--surface); border: 1px solid var(--border); color: var(--text);
+    border-radius: 8px; padding: 7px 10px; font-size: 0.85rem; outline: none; color-scheme: dark;
+  }
+  .controls input[type="date"]:focus { border-color: var(--accent); }
+  .metric-btns { display: flex; gap: 6px; margin-left: auto; }
+  .metric-btn {
+    background: var(--surface2); border: 1px solid var(--border); color: var(--muted);
+    border-radius: 8px; padding: 6px 13px; font-size: 0.8rem; cursor: pointer; transition: all 0.15s;
+  }
+  .metric-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .chart-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px; position: relative; min-height: 340px; }
+  .empty { display: none; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--muted); min-height: 260px; font-size: 0.95rem; }
+  .empty .big { font-size: 2.5rem; }
+  .loading { display: none; position: absolute; inset: 0; align-items: center; justify-content: center; border-radius: 14px; background: rgba(15,17,23,0.7); z-index: 10; }
+  .spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .range-btns { display: flex; gap: 6px; }
+  .range-btn {
+    background: var(--surface2); border: 1px solid var(--border); color: var(--muted);
+    border-radius: 8px; padding: 6px 11px; font-size: 0.8rem; cursor: pointer; transition: all 0.15s;
+  }
+  .range-btn.active { background: var(--surface); border-color: var(--accent); color: var(--accent); }
+  .hidden { display: none !important; }
+</style>
 </head>
 <body>
-  <h1>Lichess Puzzle Storm API Test</h1>
-  <div id="status">Loading...</div>
-  <div id="error" class="error"></div>
-  <div>
+
+<div class="header">
+  <span style="font-size:1.8rem">⚡</span>
+  <h1>Puzzle <span>Storm</span> Visualizer</h1>
+</div>
+
+<div class="search-row">
+  <input type="text" id="username" placeholder="Enter Lichess username…" autocomplete="off" />
+  <button id="fetchBtn" onclick="fetchData()">Analyze</button>
+</div>
+<div class="error" id="error"></div>
+
+<div id="statsRow" class="stats-row hidden"></div>
+
+<div id="mainPanel" class="hidden">
+  <div class="controls">
+    <div class="range-btns">
+      <button class="range-btn" onclick="setRange(90)">3M</button>
+      <button class="range-btn" onclick="setRange(180)">6M</button>
+      <button class="range-btn" onclick="setRange(365)">1Y</button>
+      <button class="range-btn active" onclick="setRange(null)">All</button>
+    </div>
+    <label>From <input type="date" id="dateFrom" onchange="renderChart()"></label>
+    <label>To <input type="date" id="dateTo" onchange="renderChart()"></label>
+    <div class="metric-btns">
+      <button class="metric-btn active" onclick="setMetric('score', this)">Score</button>
+      <button class="metric-btn" onclick="setMetric('moves', this)">Moves</button>
+      <button class="metric-btn" onclick="setMetric('accuracy', this)">Accuracy</button>
+      <button class="metric-btn" onclick="setMetric('combo', this)">Combo</button>
+    </div>
+  </div>
+
+  <div class="chart-wrap">
+    <div class="loading" id="loadingEl"><div class="spinner"></div></div>
+    <div class="empty" id="empty"><span class="big">📭</span><span>No data in selected range</span></div>
     <canvas id="chart"></canvas>
   </div>
-  
-  <!---------------- JavaScript ---------------->
-  <!--<script type="text/javascript" src="https://tristanpwilson.github.io/puzzle-storm-visualizer/js/chart.min.js"></script>-->
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.umd.min.js"></script>
-  <script>
-    async function getStorm(username, days = 365) {
-      const url = `https://lichess.org/api/storm/dashboard/${encodeURIComponent(username)}?days=${days}`;
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-      return res.json();
-    }
+</div>
 
-    function parseYMDWithSlashesToUTC(dateString) {
-      // "2026/2/18" -> Date at UTC midnight
-      const [y, m, d] = dateString.split("/").map(Number);
-      return new Date(Date.UTC(y, m - 1, d));
-    }
+<script>
+let allData = [];
+let chartInstance = null;
+let currentMetric = 'score';
 
-    function buildPoints(days) {
-      return [...days]
-        .map(d => ({
-          x: parseYMDWithSlashesToUTC(d._id),
-          y: d.score
-        }))
-        .sort((a, b) => a.x - b.x);
-    }
+const metricConfig = {
+  score:    { label: 'Best Score',   color: '#7c6ff7', key: d => d.score },
+  moves:    { label: 'Moves',        color: '#5eead4', key: d => d.moves },
+  accuracy: { label: 'Accuracy (%)', color: '#f9a8d4', key: d => d.accuracy },
+  combo:    { label: 'Combo',        color: '#fbbf24', key: d => d.combo },
+};
 
-    async function run() {
-      const username = "srirachachacha"; // Eventually need to make dynamic via form field
-      const statusEl = document.getElementById("status");
+async function getStorm(username, days = 365) {
+  const url = `https://lichess.org/api/storm/dashboard/${encodeURIComponent(username)}?days=${days}`;
+  const res = await fetch(url, { method: "GET" });
+  if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+  return res.json();
+}
 
-      try {
-        const data = await getStorm(username, 365);
+async function fetchData() {
+  const username = document.getElementById('username').value.trim();
+  if (!username) return;
 
-        if (!data.days?.length) {
-          statusEl.textContent = `No history returned for ${username}`;
-          return;
-        }
+  const btn = document.getElementById('fetchBtn');
+  const err = document.getElementById('error');
+  const loading = document.getElementById('loadingEl');
 
-        const points = buildPoints(data.days);
-        statusEl.textContent = `Loaded ${points.length} day(s) for ${username}`;
+  err.style.display = 'none';
+  btn.disabled = true;
+  btn.textContent = 'Loading…';
+  document.getElementById('mainPanel').classList.add('hidden');
+  document.getElementById('statsRow').classList.add('hidden');
+  loading.style.display = 'flex';
 
-        const ctx = document.getElementById("chart");
+  try {
+    const json = await getStorm(username);
+    const history = json.days;
+    if (!history || history.length === 0) throw new Error('No Puzzle Storm data found for this user.');
 
-        new Chart(ctx, {
-          type: "line",
-          data: {
-            datasets: [{
-              label: `${username} - daily top score`,
-              data: points,
-              pointRadius: 2,
-              borderWidth: 2,
-              tension: 0.2
-            }]
-          },
-          options: {
-            parsing: false, // we're already providing {x,y}
-            responsive: true,
-            scales: {
-              x: {
-                type: "time",
-                time: { unit: "day" },
-                title: { display: true, text: "Date" }
-              },
-              y: {
-                beginAtZero: true,
-                title: { display: true, text: "Score" }
-              }
+    allData = history.map(d => {
+      const [y, m, day] = d._id.split('/').map(Number);
+      return {
+        date: new Date(Date.UTC(y, m - 1, day)),
+        score: d.score,
+        moves: d.moves,
+        accuracy: +((d.moves - d.errors) / d.moves * 100).toFixed(1),
+        combo: d.combo,
+        runs: d.runs,
+      };
+    }).sort((a, b) => a.date - b.date);
+
+    setRange(null, true);
+    renderStats(json.allTime ?? json);
+    document.getElementById('mainPanel').classList.remove('hidden');
+    document.getElementById('statsRow').classList.remove('hidden');
+  } catch (e) {
+    err.textContent = e.message;
+    err.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Analyze';
+    loading.style.display = 'none';
+  }
+}
+
+function renderStats(allTime) {
+  const scores = allData.map(d => d.score);
+  const best = Math.max(...scores);
+  const avg = (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1);
+  const totalRuns = allData.reduce((a, d) => a + d.runs, 0);
+  const allTimeBest = allTime?.score ?? best;
+
+  document.getElementById('statsRow').innerHTML = `
+    <div class="stat-card"><div class="label">All-time Best</div><div class="value">${allTimeBest}</div></div>
+    <div class="stat-card"><div class="label">Best (shown)</div><div class="value teal">${best}</div></div>
+    <div class="stat-card"><div class="label">Avg Score</div><div class="value">${avg}</div></div>
+    <div class="stat-card"><div class="label">Days Played</div><div class="value teal">${allData.length}</div></div>
+    <div class="stat-card"><div class="label">Total Runs</div><div class="value">${totalRuns}</div></div>
+  `;
+}
+
+function setRange(days, skipRender) {
+  document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active'));
+  const i = days === 90 ? 0 : days === 180 ? 1 : days === 365 ? 2 : 3;
+  document.querySelectorAll('.range-btn')[i].classList.add('active');
+  const to = new Date();
+  const from = days ? new Date(to - days * 86400000) : null;
+  document.getElementById('dateFrom').value = from ? from.toISOString().split('T')[0] : '';
+  document.getElementById('dateTo').value = '';
+  if (!skipRender) renderChart();
+}
+
+function setMetric(m, btn) {
+  currentMetric = m;
+  document.querySelectorAll('.metric-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderChart();
+}
+
+function renderChart() {
+  const fromVal = document.getElementById('dateFrom').value;
+  const toVal = document.getElementById('dateTo').value;
+  const from = fromVal ? new Date(fromVal) : null;
+  const to = toVal ? new Date(toVal + 'T23:59:59') : null;
+
+  const filtered = allData.filter(d => {
+    if (from && d.date < from) return false;
+    if (to && d.date > to) return false;
+    return true;
+  });
+
+  const empty = document.getElementById('empty');
+  const canvas = document.getElementById('chart');
+
+  if (filtered.length === 0) {
+    empty.style.display = 'flex';
+    canvas.style.display = 'none';
+    return;
+  }
+  empty.style.display = 'none';
+  canvas.style.display = 'block';
+
+  const cfg = metricConfig[currentMetric];
+  const labels = filtered.map(d => d.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: '2-digit' }));
+  const values = filtered.map(cfg.key);
+
+  if (chartInstance) chartInstance.destroy();
+  chartInstance = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: cfg.label,
+        data: values,
+        borderColor: cfg.color,
+        backgroundColor: cfg.color + '22',
+        borderWidth: 2.5,
+        pointRadius: filtered.length > 60 ? 2 : 5,
+        pointHoverRadius: 7,
+        pointBackgroundColor: cfg.color,
+        fill: true,
+        tension: 0.35,
+      }]
+    },
+    options: {
+      responsive: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1a1d27',
+          borderColor: '#2e3350',
+          borderWidth: 1,
+          titleColor: '#e8eaf6',
+          bodyColor: '#7b82a0',
+          padding: 12,
+          callbacks: {
+            title: ctx => filtered[ctx[0].dataIndex].date.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' }),
+            label: ctx => {
+              const d = filtered[ctx.dataIndex];
+              return [`  Score: ${d.score}`, `  Moves: ${d.moves}   Accuracy: ${d.accuracy}%`, `  Combo: ${d.combo}   Runs: ${d.runs}`];
             },
-            plugins: {
-              legend: { display: true },
-              tooltip: {
-                callbacks: {
-                  label: (ctx) => `Score: ${ctx.parsed.y}`
-                }
-              }
-            }
+            labelColor: () => ({ borderColor: 'transparent', backgroundColor: 'transparent' }),
           }
-        });
-
-      } catch (err) {
-        console.error(err);
-        statusEl.textContent = `Request failed: ${err.message}`;
+        }
+      },
+      scales: {
+        x: { grid: { color: '#2e335022' }, ticks: { color: '#7b82a0', maxTicksLimit: 10, font: { size: 11 } } },
+        y: {
+          grid: { color: '#2e335044' },
+          ticks: { color: '#7b82a0', font: { size: 11 } },
+          title: { display: true, text: cfg.label, color: '#7b82a0', font: { size: 11 } },
+        }
       }
     }
+  });
+}
 
-    run();
-  </script>
+document.getElementById('username').addEventListener('keydown', e => {
+  if (e.key === 'Enter') fetchData();
+});
+</script>
 </body>
 </html>
