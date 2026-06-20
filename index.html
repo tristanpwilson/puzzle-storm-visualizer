@@ -130,9 +130,9 @@ function renderStats(allTime) {
 }
 
 function setRange(days) {
-  document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active').remove('.color-beige'));
+  document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active'));
   const i = days === 90 ? 0 : days === 180 ? 1 : days === 365 ? 2 : 3;
-  document.querySelectorAll('.range-btn')[i].classList.add('active').add('.color-beige');
+  document.querySelectorAll('.range-btn')[i].classList.add('active');
   const to = new Date();
   const from = days ? new Date(to - days * 86400000) : null;
   document.getElementById('dateFrom').value = from ? from.toISOString().split('T')[0] : '';
