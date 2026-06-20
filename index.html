@@ -231,6 +231,12 @@ document.getElementById('username').addEventListener('keydown', e => {
 
 window.addEventListener('load', () => fetchData());
 
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => { if (chartInstance) renderChart(); }, 200);
+});
+
 </script>
 </body>
 </html>
