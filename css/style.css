@@ -63,7 +63,7 @@ h1 span {
 }
 
 .search-row input:focus {
-  border-color: #7c6ff7;
+  border-color: #f0d9b5;
 }
 
 .search-row input::placeholder {
@@ -71,7 +71,7 @@ h1 span {
 }
 
 .search-row button {
-  background: #7c6ff7;
+  background: #f0d9b5;
   color: #fff;
   border: none;
   border-radius: 10px;
@@ -254,8 +254,7 @@ h1 span {
 
 .range-btn.active {
   background: #1a1d27;
-  border-color: #7c6ff7;
-  color: #7c6ff7;
+  border-color: #f0d9b5;
 }
 
 .hidden {
