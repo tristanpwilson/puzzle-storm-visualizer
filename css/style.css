@@ -5,7 +5,8 @@
 }
 
 body {
-  background: #0f1117;
+  /*background: #0f1117;*/
+  background: #0f0d0b;
   color: #e8eaf6;
   font-family: 'Segoe UI', system-ui, sans-serif;
   min-height: 100vh;
@@ -17,10 +18,34 @@ body {
 /* ------------- COLOR THEME ------------- */
 /* --------------------------------------- */
 
+.color-beige-light{color: #ffe9d5;}
 .color-beige{color: #f0d9b5;}
-.color-white{color:#fafafa;}
+.color-beige-med{color: #ddb88c;}
+.color-beige-dark{color: #a67a53;}
+.color-beige-desat{color: #8f8b84;}
+
+.color-white{color: #fafafa;}
+.color-grey{color: #7b82a0;}  /*unused I think*/
+.color-black{color: #0f1117}
 .teal {color: #5eead4;}
 
+
+.bg-beige{background: #f0d9b5;}
+.bg-beige-med{background: #8c6440;}
+.bg-beige-dark{background: #302418;}
+
+.bg-white{background: #fafafa;}
+.bg-grey{background: #7b82a0;} /*unused I think*/
+.bg-black{background: #0f1117}
+
+
+/*
+--bg:        #0f0d0b
+--surface:   #1c1814
+--surface2:  #2a2219
+--border:    #4a3828
+--border2:   #6b5240
+*/
 
 
 /* --------------------------------------- */
@@ -37,11 +62,22 @@ h1 span {
   color: #7c6ff7;
 }
 
+.label{
+  display: block;
+  color: #868374;
+}
+
 .header {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-bottom: 32px;
+}
+
+.search-container{}
+
+.search-container .label{
+  padding: 0 0 10px 7.5px;
 }
 
 .search-row {
@@ -52,8 +88,10 @@ h1 span {
 
 .search-row input {
   flex: 1;
-  background: #1a1d27;
-  border: 1px solid #2e3350;
+  /*background: #1a1d27;*/
+  background:#1c1814;
+  /*border: 1px solid #2e3350;*/
+  border: 1px solid #4a3828;
   color: #e8eaf6;
   border-radius: 10px;
   padding: 12px 16px;
@@ -63,7 +101,7 @@ h1 span {
 }
 
 .search-row input:focus {
-  border-color: #f0d9b5;
+  border-color: #6b5240;
 }
 
 .search-row input::placeholder {
@@ -71,8 +109,8 @@ h1 span {
 }
 
 .search-row button {
-  background: #f0d9b5;
-  color: #fff;
+  /*background: #f0d9b5;*/
+  /*color: #fff;*/
   border: none;
   border-radius: 10px;
   padding: 12px 22px;
@@ -115,8 +153,8 @@ h1 span {
 }
 
 .stat-card {
-  background: #1a1d27;
-  border: 1px solid #2e3350;
+  background: #1c1814;
+  border: 1px solid #4a3828;
   border-radius: 12px;
   padding: 16px;
 }
@@ -124,8 +162,7 @@ h1 span {
 .stat-card .label {
   font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #7b82a0;
+  letter-spacing: 1px;
   margin-bottom: 6px;
 }
 
@@ -142,14 +179,15 @@ h1 span {
   align-items: center;
 }
 
-.controls label {
+.controls .label {
   font-size: 0.82rem;
-  color: #7b82a0;
+  padding: 0 0 0 5px;
 }
 
 .controls input[type="date"] {
+  margin: 0 0 0 2.5px;
   background: #1a1d27;
-  border: 1px solid #2e3350;
+  border: 1px solid #8f8b84;
   color: #e8eaf6;
   border-radius: 8px;
   padding: 7px 10px;
@@ -159,7 +197,7 @@ h1 span {
 }
 
 .controls input[type="date"]:focus {
-  border-color: #7c6ff7;
+  border-color: #f0d9b5;
 }
 
 .metric-btns {
@@ -169,9 +207,9 @@ h1 span {
 }
 
 .metric-btn {
-  background: #22263a;
-  border: 1px solid #2e3350;
-  color: #7b82a0;
+  /*background: #22263a;*/
+  border: 1px solid #8f8b84;
+  /*color: #7b82a0;*/
   border-radius: 8px;
   padding: 6px 13px;
   font-size: 0.8rem;
@@ -180,14 +218,14 @@ h1 span {
 }
 
 .metric-btn.active {
-  background: #7c6ff7;
-  border-color: #7c6ff7;
-  color: #fff;
+  /*background: #7c6ff7;*/
+  border-color: #f0d9b5;
+  /*color: #fff;*/
 }
 
 .chart-wrap {
-  background: #1a1d27;
-  border: 1px solid #2e3350;
+  background: #1c1814;
+  border: 1px solid #4a3828;
   border-radius: 14px;
   padding: 24px;
   position: relative;
@@ -241,9 +279,7 @@ h1 span {
 }
 
 .range-btn {
-  background: #22263a;
-  border: 1px solid #2e3350;
-  color: #7b82a0;
+  border: 1px solid #8f8b84;
   border-radius: 8px;
   padding: 6px 11px;
   font-size: 0.8rem;
@@ -252,7 +288,6 @@ h1 span {
 }
 
 .range-btn.active {
-  background: #1a1d27;
   border-color: #f0d9b5;
 }
 
