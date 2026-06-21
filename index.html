@@ -11,13 +11,18 @@
 
 <div class="header">
   <span style="font-size:1.8rem">♔</span>
-  <h1>Puzzle <span>Storm</span> Visualizer</h1>
+  <h1>Lichess <span class="color-beige">Puzzle Storm</span> Visualizer</h1>
 </div>
 
-<div class="search-row">
-  <input type="text" id="username" placeholder="" value="srirachachacha" autocomplete="off" />
-  <button id="fetchBtn" onclick="fetchData()">Analyze</button>
-</div>
+
+
+  <div class="search-container">
+    <label for="username" class="label">Username</label>
+    <div class="search-row">
+      <input type="text" id="username" placeholder="" value="srirachachacha" autocomplete="off" />
+      <button id="fetchBtn" class="bg-beige-dark color-white" onclick="fetchData()">Analyze</button>
+    </div>
+  </div>
 <div class="error" id="error"></div>
 
 <div id="statsRow" class="stats-row hidden"></div>
@@ -30,13 +35,13 @@
       <button class="range-btn" onclick="setRange(365); renderChart()">1Y</button>
       <button class="range-btn" onclick="setRange(null); renderChart()">All</button>
     </div>
-    <label>From <input type="date" id="dateFrom" onchange="renderChart()"></label>
-    <label>To <input type="date" id="dateTo" onchange="renderChart()"></label>
+    <label class="label">From <input type="date" id="dateFrom" onchange="renderChart()"></label>
+    <label class="label">To <input type="date" id="dateTo" onchange="renderChart()"></label>
     <div class="metric-btns">
-      <button class="metric-btn active" onclick="setMetric('score', this)">Score</button>
-      <button class="metric-btn" onclick="setMetric('moves', this)">Moves</button>
-      <button class="metric-btn" onclick="setMetric('accuracy', this)">Accuracy</button>
-      <button class="metric-btn" onclick="setMetric('combo', this)">Combo</button>
+      <button class="metric-btn color-beige bg-beige-med active" onclick="setMetric('score', this)">Score</button>
+      <button class="metric-btn color-beige-desat bg-beige-dark" onclick="setMetric('moves', this)">Moves</button>
+      <button class="metric-btn color-beige-desat bg-beige-dark" onclick="setMetric('accuracy', this)">Accuracy</button>
+      <button class="metric-btn color-beige-desat bg-beige-dark" onclick="setMetric('combo', this)">Combo</button>
     </div>
   </div>
 
@@ -130,9 +135,12 @@ function renderStats(allTime) {
 }
 
 function setRange(days) {
-  document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active'));
+  const btns = document.querySelectorAll('.range-btn');
+  btns.forEach(b => b.classList.remove('active', 'color-beige', 'bg-beige-med'));
+  btns.forEach(b => b.classList.add('color-beige-desat', 'bg-beige-dark'));
   const i = days === 90 ? 0 : days === 180 ? 1 : days === 365 ? 2 : 3;
-  document.querySelectorAll('.range-btn')[i].classList.add('active');
+  btns[i].classList.add('active', 'color-beige', 'bg-beige-med');
+  btns[i].classList.remove('color-beige-desat', 'bg-beige-dark');
   const to = new Date();
   const from = days ? new Date(to - days * 86400000) : null;
   document.getElementById('dateFrom').value = from ? from.toISOString().split('T')[0] : '';
@@ -141,8 +149,11 @@ function setRange(days) {
 
 function setMetric(m, btn) {
   currentMetric = m;
-  document.querySelectorAll('.metric-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+  const metbtns = document.querySelectorAll('.metric-btn');
+  metbtns.forEach(b => b.classList.remove('active', 'color-beige', 'bg-beige-med'));
+  metbtns.forEach(b => b.classList.add('color-beige-desat', 'bg-beige-dark'));
+  btn.classList.add('active', 'color-beige', 'bg-beige-med');
+  btn.classList.remove('color-beige-desat', 'bg-beige-dark');
   renderChart();
 }
 
