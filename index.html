@@ -10,7 +10,7 @@
 <body>
 
 <div class="header">
-  <span style="font-size:1.8rem">♔</span>
+  <span class="icon-header">♔</span>
   <h1>Lichess <span class="color-beige">Puzzle Storm</span> Visualizer</h1>
 </div>
 
@@ -28,21 +28,26 @@
 <div id="statsRow" class="stats-row hidden"></div>
 
 <div id="mainPanel" class="hidden">
+
   <div class="controls">
+
     <div class="range-btns">
       <button class="range-btn" onclick="setRange(90); renderChart()">3M</button>
       <button class="range-btn" onclick="setRange(180); renderChart()">6M</button>
       <button class="range-btn" onclick="setRange(365); renderChart()">1Y</button>
       <button class="range-btn" onclick="setRange(null); renderChart()">All</button>
     </div>
+
     <label class="label">From <input type="date" id="dateFrom" onchange="renderChart()"></label>
     <label class="label">To <input type="date" id="dateTo" onchange="renderChart()"></label>
+
     <div class="metric-btns">
       <button class="metric-btn color-beige bg-beige-med active" onclick="setMetric('score', this)">Score</button>
       <button class="metric-btn color-beige-desat bg-beige-dark" onclick="setMetric('moves', this)">Moves</button>
       <button class="metric-btn color-beige-desat bg-beige-dark" onclick="setMetric('accuracy', this)">Accuracy</button>
       <button class="metric-btn color-beige-desat bg-beige-dark" onclick="setMetric('combo', this)">Combo</button>
     </div>
+
   </div>
 
   <div class="chart-wrap">
@@ -50,6 +55,7 @@
     <div class="empty" id="empty"><span class="big">📭</span><span>No data in selected range</span></div>
     <canvas id="chart"></canvas>
   </div>
+
 </div>
 
 <script>
@@ -126,11 +132,11 @@ function renderStats(allTime) {
   const allTimeBest = allTime?.score ?? best;
 
   document.getElementById('statsRow').innerHTML = `
-    <div class="stat-card"><div class="label">All-time Best</div><div class="value">${allTimeBest}</div></div>
-    <div class="stat-card"><div class="label">Best (shown)</div><div class="value teal">${best}</div></div>
-    <div class="stat-card"><div class="label">Avg Score</div><div class="value">${avg}</div></div>
-    <div class="stat-card"><div class="label">Days Played</div><div class="value teal">${allData.length}</div></div>
-    <div class="stat-card"><div class="label">Total Runs</div><div class="value">${totalRuns}</div></div>
+    <div class="stat-card"><div class="label">All-time Best</div><div class="value color-beige">${allTimeBest}</div></div>
+    <div class="stat-card"><div class="label">Best (shown)</div><div class="value color-white">${best}</div></div>
+    <div class="stat-card"><div class="label">Avg Score</div><div class="value color-beige">${avg}</div></div>
+    <div class="stat-card"><div class="label">Days Played</div><div class="value color-white">${allData.length}</div></div>
+    <div class="stat-card"><div class="label">Total Runs</div><div class="value color-beige">${totalRuns}</div></div>
   `;
 }
 
