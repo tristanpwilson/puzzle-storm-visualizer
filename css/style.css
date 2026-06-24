@@ -162,6 +162,28 @@ h1 span {
   border-color: #7c6ff7;
 }
 
+.smooth-btns {
+  display: flex;
+  gap: 6px;
+}
+
+.smooth-btn {
+  background: #22263a;
+  border: 1px solid #2e3350;
+  color: #7b82a0;
+  border-radius: 8px;
+  padding: 6px 13px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.smooth-btn.active {
+  background: #7c6ff7;
+  border-color: #7c6ff7;
+  color: #fff;
+}
+
 .metric-btns {
   display: flex;
   gap: 6px;
