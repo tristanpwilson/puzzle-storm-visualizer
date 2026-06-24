@@ -241,7 +241,7 @@ h1 span {
   border: 1px solid #8f8b84;
   color: #e8eaf6;
   border-radius: 8px;
-  padding: 7px 10px;
+  padding: 5px 10px;
   font-size: 0.85rem;
   outline: none;
   color-scheme: dark;
@@ -252,8 +252,46 @@ h1 span {
 }
 
 .smooth-btns {
+  flex-grow:2;
   display: flex;
   gap: 6px;
+  margin: 0 0 0 10px;
+}
+
+.smooth-btns .container-dropdown{
+  display:flex;
+  align-content:middle;
+}
+
+.smooth-btns .container-dropdown:after{
+  content:"▼";
+  position:relative;
+  display:inline-block;
+  top:5px;
+  right:20px;
+  font-size:12px;
+  color:#f0f0f0;
+  pointer-events: none;
+}
+
+.smooth-btns .dropdown{
+  display:block;
+  height:30px !important;
+  width:110px;
+  padding: 0px 10px;
+  border: 1px solid #8f8b84;
+  border-radius:8px;
+  background: #1a1d27;
+  color: #e8eaf6;
+  appearance:none;
+}
+
+.smooth-btns .dropdown:focus{
+  outline:none;
+}
+
+.smooth-btns .dropdown:open{
+  border-radius:8px 8px 0px 0px !important;
 }
 
 .smooth-btn {
@@ -316,7 +354,7 @@ h1 span {
       margin: 0 0 0 10px;
     }
     .controls .label input[type="date"]::-webkit-calendar-picker-indicator{
-    margin-left: -20px;
+      margin-left: -20px;
     }
     .controls .smooth-btns {
       flex-basis:100%;
