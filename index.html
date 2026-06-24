@@ -170,13 +170,30 @@ function setSmoothing(days, btn) {
 }
 
 function applySmoothing(data, windowDays) {
-  if (windowDays === 1) return data;
-  return data.map((d, i) => {
-    const windowStart = d.date - windowDays * 86400000;
-    const window = data.slice(0, i + 1).filter(p => p.date >= windowStart);
-    const avg = v => +(window.reduce((sum, p) => sum + p[v], 0) / window.length).toFixed(1);
-    return { ...d, score: avg('score'), moves: avg('moves'), accuracy: avg('accuracy'), combo: avg('combo') };
-  });
+  if (windowDays === 1 || data.length === 0) return data;
+  const buckets = [];
+  const origin = data[0].date.getTime();
+  const bucketMs = windowDays * 86400000;
+  let i = 0;
+  while (i < data.length) {
+    const bucketIndex = Math.floor((data[i].date.getTime() - origin) / bucketMs);
+    const bucketEnd = origin + (bucketIndex + 1) * bucketMs;
+    const group = [];
+    while (i < data.length && data[i].date.getTime() < bucketEnd) {
+      group.push(data[i]);
+      i++;
+    }
+    const avg = v => +(group.reduce((sum, p) => sum + p[v], 0) / group.length).toFixed(1);
+    buckets.push({
+      date: group[group.length - 1].date,
+      score: avg('score'),
+      moves: avg('moves'),
+      accuracy: avg('accuracy'),
+      combo: avg('combo'),
+      runs: group.reduce((sum, p) => sum + p.runs, 0),
+    });
+  }
+  return buckets;
 }
 
 function setMetric(m, btn) {
@@ -228,7 +245,7 @@ function renderChart() {
         borderColor: cfg.color,
         backgroundColor: cfg.color + '22',
         borderWidth: 2.5,
-        pointRadius: filtered.length > 60 ? 2 : 5,
+        pointRadius: smoothed.length > 60 ? 2 : 5,
         pointHoverRadius: 7,
         pointBackgroundColor: cfg.color,
         fill: true,
