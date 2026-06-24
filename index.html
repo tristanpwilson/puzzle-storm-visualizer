@@ -10,39 +10,50 @@
 <body>
 
 <div class="header">
-  <span style="font-size:1.8rem">♔</span>
-  <h1>Puzzle <span>Storm</span> Visualizer</h1>
+  <span class="icon-header">♔</span>
+  <h1>Lichess <span class="color-beige">Puzzle Storm</span> Visualizer</h1>
 </div>
 
-<div class="search-row">
-  <input type="text" id="username" placeholder="" value="srirachachacha" autocomplete="off" />
-  <button id="fetchBtn" onclick="fetchData()">Analyze</button>
-</div>
+
+
+  <div class="search-container">
+    <label for="username" class="label">Username</label>
+    <div class="search-row">
+      <input type="text" id="username" placeholder="" value="srirachachacha" autocomplete="off" />
+      <button id="fetchBtn" class="bg-beige-dark color-white" onclick="fetchData()">Analyze</button>
+    </div>
+  </div>
 <div class="error" id="error"></div>
 
 <div id="statsRow" class="stats-row hidden"></div>
 
 <div id="mainPanel" class="hidden">
+
   <div class="controls">
+
     <div class="range-btns">
       <button class="range-btn" onclick="setRange(90); renderChart()">3M</button>
       <button class="range-btn" onclick="setRange(180); renderChart()">6M</button>
       <button class="range-btn" onclick="setRange(365); renderChart()">1Y</button>
       <button class="range-btn" onclick="setRange(null); renderChart()">All</button>
     </div>
-    <label>From <input type="date" id="dateFrom" onchange="renderChart()"></label>
-    <label>To <input type="date" id="dateTo" onchange="renderChart()"></label>
+
+    <label class="label">From <input type="date" id="dateFrom" onchange="renderChart()"></label>
+    <label class="label">To <input type="date" id="dateTo" onchange="renderChart()"></label>
+
     <div class="smooth-btns">
-      <button class="smooth-btn active" onclick="setSmoothing(1, this)">Daily</button>
-      <button class="smooth-btn" onclick="setSmoothing(7, this)">7D Avg</button>
-      <button class="smooth-btn" onclick="setSmoothing(30, this)">30D Avg</button>
+      <button class="smooth-btn color-beige bg-beige-med active" onclick="setSmoothing(1, this)">Daily</button>
+      <button class="smooth-btn color-beige-desat bg-beige-dark" onclick="setSmoothing(7, this)">7D Avg</button>
+      <button class="smooth-btn color-beige-desat bg-beige-dark" onclick="setSmoothing(30, this)">30D Avg</button>
     </div>
+
     <div class="metric-btns">
-      <button class="metric-btn active" onclick="setMetric('score', this)">Score</button>
-      <button class="metric-btn" onclick="setMetric('moves', this)">Moves</button>
-      <button class="metric-btn" onclick="setMetric('accuracy', this)">Accuracy</button>
-      <button class="metric-btn" onclick="setMetric('combo', this)">Combo</button>
+      <button class="metric-btn color-beige bg-beige-med active" onclick="setMetric('score', this)">Score</button>
+      <button class="metric-btn color-beige-desat bg-beige-dark" onclick="setMetric('moves', this)">Moves</button>
+      <button class="metric-btn color-beige-desat bg-beige-dark" onclick="setMetric('accuracy', this)">Accuracy</button>
+      <button class="metric-btn color-beige-desat bg-beige-dark" onclick="setMetric('combo', this)">Combo</button>
     </div>
+
   </div>
 
   <div class="chart-wrap">
@@ -50,6 +61,7 @@
     <div class="empty" id="empty"><span class="big">📭</span><span>No data in selected range</span></div>
     <canvas id="chart"></canvas>
   </div>
+
 </div>
 
 <script>
@@ -59,7 +71,7 @@ let currentMetric = 'score';
 let currentSmoothing = 1;
 
 const metricConfig = {
-  score:    { label: 'Best Score',   color: '#7c6ff7', key: d => d.score },
+  score:    { label: 'Best Score',   color: '#f0d9b5', key: d => d.score },
   moves:    { label: 'Moves',        color: '#5eead4', key: d => d.moves },
   accuracy: { label: 'Accuracy (%)', color: '#f9a8d4', key: d => d.accuracy },
   combo:    { label: 'Combo',        color: '#fbbf24', key: d => d.combo },
@@ -127,18 +139,21 @@ function renderStats(allTime) {
   const allTimeBest = allTime?.score ?? best;
 
   document.getElementById('statsRow').innerHTML = `
-    <div class="stat-card"><div class="label">All-time Best</div><div class="value">${allTimeBest}</div></div>
-    <div class="stat-card"><div class="label">Best (shown)</div><div class="value teal">${best}</div></div>
-    <div class="stat-card"><div class="label">Avg Score</div><div class="value">${avg}</div></div>
-    <div class="stat-card"><div class="label">Days Played</div><div class="value teal">${allData.length}</div></div>
-    <div class="stat-card"><div class="label">Total Runs</div><div class="value">${totalRuns}</div></div>
+    <div class="stat-card"><div class="label">All-time Best</div><div class="value color-beige">${allTimeBest}</div></div>
+    <div class="stat-card"><div class="label">Best (shown)</div><div class="value color-white">${best}</div></div>
+    <div class="stat-card"><div class="label">Avg Score</div><div class="value color-beige">${avg}</div></div>
+    <div class="stat-card"><div class="label">Days Played</div><div class="value color-white">${allData.length}</div></div>
+    <div class="stat-card"><div class="label">Total Runs</div><div class="value color-beige">${totalRuns}</div></div>
   `;
 }
 
 function setRange(days) {
-  document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active'));
+  const btns = document.querySelectorAll('.range-btn');
+  btns.forEach(b => b.classList.remove('active', 'color-beige', 'bg-beige-med'));
+  btns.forEach(b => b.classList.add('color-beige-desat', 'bg-beige-dark'));
   const i = days === 90 ? 0 : days === 180 ? 1 : days === 365 ? 2 : 3;
-  document.querySelectorAll('.range-btn')[i].classList.add('active');
+  btns[i].classList.add('active', 'color-beige', 'bg-beige-med');
+  btns[i].classList.remove('color-beige-desat', 'bg-beige-dark');
   const to = new Date();
   const from = days ? new Date(to - days * 86400000) : null;
   document.getElementById('dateFrom').value = from ? from.toISOString().split('T')[0] : '';
@@ -148,8 +163,9 @@ function setRange(days) {
 function setSmoothing(days, btn) {
   currentSmoothing = days;
   const btns = document.querySelectorAll('.smooth-btn');
-  btns.forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+  btns.forEach(b => { b.classList.remove('active', 'color-beige', 'bg-beige-med'); b.classList.add('color-beige-desat', 'bg-beige-dark'); });
+  btn.classList.add('active', 'color-beige', 'bg-beige-med');
+  btn.classList.remove('color-beige-desat', 'bg-beige-dark');
   renderChart();
 }
 
@@ -165,8 +181,11 @@ function applySmoothing(data, windowDays) {
 
 function setMetric(m, btn) {
   currentMetric = m;
-  document.querySelectorAll('.metric-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+  const metbtns = document.querySelectorAll('.metric-btn');
+  metbtns.forEach(b => b.classList.remove('active', 'color-beige', 'bg-beige-med'));
+  metbtns.forEach(b => b.classList.add('color-beige-desat', 'bg-beige-dark'));
+  btn.classList.add('active', 'color-beige', 'bg-beige-med');
+  btn.classList.remove('color-beige-desat', 'bg-beige-dark');
   renderChart();
 }
 
