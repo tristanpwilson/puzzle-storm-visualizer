@@ -64,6 +64,7 @@
           <button class="metric-btn color-beige-desat bg-beige-dark" onclick="setMetric('moves', this)">Moves</button>
           <button class="metric-btn color-beige-desat bg-beige-dark" onclick="setMetric('accuracy', this)">Accuracy</button>
           <button class="metric-btn color-beige-desat bg-beige-dark" onclick="setMetric('combo', this)">Combo</button>
+          <button class="metric-btn color-beige-desat bg-beige-dark" onclick="setMetric('runs', this)">Runs</button>
         </div>
 
       </div>
@@ -87,6 +88,7 @@
       moves:    { label: 'Moves',        color: '#5eead4', key: d => d.moves },
       accuracy: { label: 'Accuracy (%)', color: '#f9a8d4', key: d => d.accuracy },
       combo:    { label: 'Combo',        color: '#fbbf24', key: d => d.combo },
+      runs:     { label: 'Runs',         color: '#a78bfa', key: d => d.runs },
     };
 
     async function getStorm(username, days = 365) {
