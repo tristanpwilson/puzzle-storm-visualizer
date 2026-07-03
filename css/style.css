@@ -5,14 +5,12 @@
 }
 
 body {
-  /*background: #0f1117;*/
+  min-height: 100vh;
+  padding: 32px 24px 16px 24px;
   background: #0f0d0b;
   color: #e8eaf6;
   font-family: 'Segoe UI', system-ui, sans-serif;
-  min-height: 100vh;
-  padding: 32px 24px;
 }
-
 
 /* --------------------------------------- */
 /* ------------- COLOR THEME ------------- */
@@ -128,9 +126,7 @@ h1 {
 .search-row input {
   flex-grow:1;
   flex-shrink:1;
-  /*background: #1a1d27;*/
   background:#1c1814;
-  /*border: 1px solid #2e3350;*/
   border: 1px solid #4a3828;
   color: #e8eaf6;
   border-radius: 10px;
@@ -149,8 +145,6 @@ h1 {
 }
 
 .search-row button {
-  /*background: #f0d9b5;*/
-  /*color: #fff;*/
   border: none;
   border-radius: 10px;
   padding: 12px 22px;
@@ -264,7 +258,7 @@ h1 {
   }
 
 
-/* ------- Date Range Buttons ------- */
+/* ---- Date Range Buttons ---- */
 .range-btns{
   margin: 0 0 0 1px;
 }
@@ -306,7 +300,7 @@ h1 {
   }
 
 
-/* ----- Average Control ----- */
+/* ------ Average Control ------ */
 .smooth-btns {
   flex-grow:2;
   margin: 0 0 0 10px;
@@ -357,7 +351,7 @@ h1 {
 
 
 
-/* ----- Metrics Buttons ----- */
+/* ----- Metrics Buttons ------ */
 .metric-btns {
   margin-left: auto;
 }
@@ -367,14 +361,14 @@ h1 {
 
 
 
-/* ----- Controls Mobile Media Queries ----- */
+/* -- Controls Media Queries --- */
   @media (max-width: 767px){
     .range-btns,
     .controls .label,
     .smooth-btns,
     .metric-btns{
       flex-basis:100%;
-      gap: 2.5%;
+      gap: 8px 2.5%;
       margin:15px 0 0 0;
       justify-content:flex-end;
     }
@@ -401,18 +395,26 @@ h1 {
     .smooth-btns .dropdown{
       height:37px !important;
     }
-
   }
 
-
-/* ------------- CHART -------------- */
+  @media (max-width: 500px){
+    .range-btns,
+    .smooth-btns,
+    .metric-btns{
+      display: flex;
+      flex-wrap:wrap;
+    }
+  }
+/* --------------------------------------------- */
+/* --------------- CHART VISUAL ---------------- */
+/* --------------------------------------------- */
 
 .chart-wrap {
+  position: relative;
   background: #1c1814;
   border: 1px solid #4a3828;
   border-radius: 14px;
   padding: 72px 32px 48px 32px;
-  position: relative;
   height: 50vh;
   min-height: 600px;
 }
@@ -462,10 +464,50 @@ h1 {
   display: none !important;
 }
 
-
-
   @media (max-width: 767px){
     .chart-wrap{
       padding: 24px 0;
+    }
+  }
+
+
+/* --------------------------------------------- */
+/* ------------------ FOOTER ------------------- */
+/* --------------------------------------------- */
+
+footer{
+  position:fixed;
+  display:flex;
+  justify-content:space-between;
+  bottom:0;
+  width:calc(100% - 48px);
+  padding:5px 0 5px 0;
+  background: #0F0D0B;
+  background: linear-gradient(180deg,rgba(15, 13, 11, 0.1) 5%, rgba(15, 13, 11, 1) 40%, rgba(15, 13, 11, 1) 100%);
+}
+
+footer #byline{
+  font-size:12px;
+  color: #ccc;
+}
+
+footer #disclaimer{
+  font-size:12px;
+  color: #767676;
+}
+
+  @media (max-width: 767px){
+    footer{
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start;
+    }
+
+    footer #byline{
+      font-size:10px;
+    }
+
+    footer #disclaimer{
+      font-size:10px;
     }
   }
