@@ -239,10 +239,13 @@ h1 span {
   }
 
   .range-btns .range-btn:hover,
-  .range-btns .range-btn:focus,
   .metric-btns .metric-btn:hover,
-  .metric-btns .metric-btn:focus {
+  .range-btns .range-btn:focus,
+  .metric-btns .metric-btn:focus{
     border-color: #a6a29c;
+  }
+  .range-btns .range-btn:hover,
+  .metric-btns .metric-btn:hover{
     background: #4f3e2e;
   }
 
@@ -274,6 +277,11 @@ h1 span {
     color-scheme: dark;
     cursor: pointer !important;
       transition: all 0.15s;
+  }
+
+  .controls .label input[type="date"]::-webkit-calendar-picker-indicator{
+    margin: 0 0 -4px -4px;
+    cursor: pointer !important;
   }
 
   .controls input[type="date"]:hover, 
@@ -332,6 +340,7 @@ h1 span {
   .smooth-btns .dropdown:open{
     border-radius:8px 8px 0px 0px !important;
   }
+
 
 
 /* ----- Metrics Buttons ----- */
