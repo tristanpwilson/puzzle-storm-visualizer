@@ -48,24 +48,25 @@ body {
 */
 
 
-/* --------------------------------------- */
-/* ------------- TEXT STYLES ------------- */
-/* --------------------------------------- */
+/* --------------------------------------------- */
+/* ---------------- TEXT STYLES ---------------- */
+/* --------------------------------------------- */
 
 h1 {
   font-size: 34px;
   font-weight: 700;
-  letter-spacing: -0.5px;
-}
-
-h1 span {
-  color: #7c6ff7;
 }
 
 .label{
   display: block;
   color: #868374;
 }
+
+
+
+/* --------------------------------------------- */
+/* ---------------- PAGE HEADER ---------------- */
+/* --------------------------------------------- */
 
 .header {
   display: flex;
@@ -75,26 +76,39 @@ h1 span {
 }
 
 .header .icon-header {
-  font-size:34px;
-  font-weight:bold;
+  width:34px;
+  height:auto;
+  filter:invert(1); 
+}
+
+.header h1{
+  letter-spacing: -0.5px;
+  line-height: 130%;
+}
+
+.header h1 span:first-child {
+  text-wrap:nowrap;
 }
 
   @media (max-width: 767px){
-    h1 {
-      font-size:24px;
-    }
     .header .icon-header {
-      font-size:30px;
-      font-weight:bold;
+      width:32px;
+    }
+    .header h1 {
+      font-size:28px;
     }
   }
 
-  @media (max-width: 422px){
+  @media (max-width: 498px){
     .header .icon-header {
-      font-size:40px;
-      font-weight:bold;
+      width:48px;
     }
   }
+
+
+/* --------------------------------------------- */
+/* --------------- USER CONTROLS --------------- */
+/* --------------------------------------------- */
 
 
 /* ---------------- SEARCH --------------- */
