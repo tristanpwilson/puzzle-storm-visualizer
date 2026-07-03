@@ -104,6 +104,9 @@ h1 {
     .header .icon-header {
       width:48px;
     }
+    .header h1 span:first-child {
+      text-wrap:wrap;
+    }
   }
 
 
@@ -129,6 +132,7 @@ h1 {
 .search-row input {
   flex-grow:1;
   flex-shrink:1;
+  min-width:0;
   background:#1c1814;
   border: 1px solid #4a3828;
   color: #e8eaf6;
