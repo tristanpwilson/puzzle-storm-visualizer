@@ -384,6 +384,7 @@ h1 {
     }
   
     .controls .label {
+      display:none;
       text-align:right;
     }
 
