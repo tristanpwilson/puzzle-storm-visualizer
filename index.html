@@ -163,10 +163,10 @@
 
     function setRange(days) {
       const btns = document.querySelectorAll('.range-btn');
-      btns.forEach(b => b.classList.remove('active', 'color-beige', 'bg-beige-med'));
+      btns.forEach(b => b.classList.remove('active', 'color-beige-light', 'bg-beige-med'));
       btns.forEach(b => b.classList.add('color-beige-desat', 'bg-beige-dark'));
       const i = days === 90 ? 0 : days === 180 ? 1 : days === 365 ? 2 : 3;
-      btns[i].classList.add('active', 'color-beige', 'bg-beige-med');
+      btns[i].classList.add('active', 'color-beige-light', 'bg-beige-med');
       btns[i].classList.remove('color-beige-desat', 'bg-beige-dark');
       const to = new Date();
       const from = days ? new Date(to - days * 86400000) : null;
@@ -212,9 +212,9 @@
     function setMetric(m, btn) {
       currentMetric = m;
       const metbtns = document.querySelectorAll('.metric-btn');
-      metbtns.forEach(b => b.classList.remove('active', 'color-beige', 'bg-beige-med'));
+      metbtns.forEach(b => b.classList.remove('active', 'color-beige-light', 'bg-beige-med'));
       metbtns.forEach(b => b.classList.add('color-beige-desat', 'bg-beige-dark'));
-      btn.classList.add('active', 'color-beige', 'bg-beige-med');
+      btn.classList.add('active', 'color-beige-light', 'bg-beige-med');
       btn.classList.remove('color-beige-desat', 'bg-beige-dark');
       renderChart();
     }
@@ -289,11 +289,11 @@
             }
           },
           scales: {
-            x: { grid: { color: '#2e335022' }, ticks: { color: '#7b82a0', maxTicksLimit: 10, font: { size: 11 } } },
+            x: { grid: { color: '#2e335022' }, ticks: { color: '#7b82a0', maxTicksLimit: 10, font: { size: 12 } } },
             y: {
               grid: { color: '#2e335044' },
-              ticks: { color: '#7b82a0', font: { size: 11 } },
-              title: { display: true, text: cfg.label, color: '#7b82a0', font: { size: 11 } },
+              ticks: { color: '#7b82a0', font: { size: 12 } },
+              title: { display: true, text: cfg.label, color: '#7b82a0', font: { size: 14, weight: "bold" } },
             }
           }
         }
