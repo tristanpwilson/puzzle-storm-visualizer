@@ -154,7 +154,7 @@
 
       document.getElementById('statsRow').innerHTML = `
         <div class="stat-card"><div class="label">All-time Best</div><div class="value color-beige">${allTimeBest}</div></div>
-        <div class="stat-card"><div class="label">Best (shown)</div><div class="value color-white">${best}</div></div>
+                <div class="stat-card"><div class="label">Best (shown)</div><div class="value color-white" id="bestShown">${best}</div></div>
         <div class="stat-card"><div class="label">Avg Score</div><div class="value color-beige">${avg}</div></div>
         <div class="stat-card"><div class="label">Days Played</div><div class="value color-white">${allData.length}</div></div>
         <div class="stat-card"><div class="label">Total Runs</div><div class="value color-beige">${totalRuns}</div></div>
@@ -241,6 +241,8 @@
       }
       empty.style.display = 'none';
       canvas.style.display = 'block';
+
+      document.getElementById('bestShown').textContent = Math.max(...filtered.map(d => d.score));
 
       const cfg = metricConfig[currentMetric];
       const smoothed = applySmoothing(filtered, currentSmoothing);
