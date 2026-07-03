@@ -104,9 +104,6 @@ h1 {
     .header .icon-header {
       width:48px;
     }
-    .header h1 span:first-child {
-      text-wrap:wrap;
-    }
   }
 
 
