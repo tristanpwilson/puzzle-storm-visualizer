@@ -15,8 +15,6 @@
       <h1>Lichess <span><span class="color-beige">Puzzle Storm</span> Visualizer</span></h1>
     </div>
 
-
-
       <div class="search-container">
         <label for="username" class="label">Username</label>
         <div class="search-row">
@@ -53,11 +51,6 @@
           </div>
         </div>
         
-        <!--<div class="smooth-btns">
-          <button class="smooth-btn color-beige bg-beige-med active" onclick="setSmoothing(1, this)">Daily</button>
-          <button class="smooth-btn color-beige-desat bg-beige-dark" onclick="setSmoothing(7, this)">7D Avg</button>
-          <button class="smooth-btn color-beige-desat bg-beige-dark" onclick="setSmoothing(30, this)">30D Avg</button>
-        </div>-->
 
         <div class="metric-btns">
           <button class="metric-btn color-beige bg-beige-med active" onclick="setMetric('score', this)">Score</button>
@@ -76,6 +69,11 @@
       </div>
 
     </div>
+
+    <footer>
+      <p id="byline">Tristan Wilson | 2026</p>
+      <p id="disclaimer">This is an independent creative project; this page is not formally affiliated with Lichess in any way.</p>
+    </footer>
 
     <script>
     let allData = [];
@@ -154,7 +152,7 @@
 
       document.getElementById('statsRow').innerHTML = `
         <div class="stat-card"><div class="label">All-time Best</div><div class="value color-beige">${allTimeBest}</div></div>
-        <div class="stat-card"><div class="label">Best (shown)</div><div class="value color-white" id="bestShown">${best}</div></div>
+        <div class="stat-card"><div class="label">Best (shown)</div><div class="value color-white">${best}</div></div>
         <div class="stat-card"><div class="label">Avg Score</div><div class="value color-beige">${avg}</div></div>
         <div class="stat-card"><div class="label">Days Played</div><div class="value color-white">${allData.length}</div></div>
         <div class="stat-card"><div class="label">Total Runs</div><div class="value color-beige">${totalRuns}</div></div>
@@ -241,8 +239,6 @@
       }
       empty.style.display = 'none';
       canvas.style.display = 'block';
-
-      document.getElementById('bestShown').textContent = Math.max(...filtered.map(d => d.score));
 
       const cfg = metricConfig[currentMetric];
       const smoothed = applySmoothing(filtered, currentSmoothing);
