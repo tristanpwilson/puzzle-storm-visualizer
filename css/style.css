@@ -212,168 +212,173 @@ h1 span {
   align-items: center;
 }
 
-.range-btns {
+
+
+/* ------- All Controls ------- */
+.range-btns,
+.smooth-btns,
+.metric-btns{
   display: flex;
-  gap: 6px;
+  gap: 10px;
 }
 
-.range-btn {
-  border: 1px solid #8f8b84;
-  border-radius: 8px;
-  padding: 6px 11px;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: all 0.15s;
+  .range-btns .range-btn,
+  .metric-btns .metric-btn{
+    padding: 9px 18px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid #8f8b84;
+    border-radius: 8px;
+    cursor: pointer;
+      transition: all 0.15s;
+  }
+
+  .range-btns .range-btn.active,
+  .metric-btns .metric-btn.active {
+    border-color: #f0d9b5;
+  }
+
+  .range-btns .range-btn:hover,
+  .range-btns .range-btn:focus,
+  .metric-btns .metric-btn:hover,
+  .metric-btns .metric-btn:focus {
+    border-color: #a6a29c;
+    background: #4f3e2e;
+  }
+
+
+/* ------- Date Range Buttons ------- */
+.range-btns{
+  margin: 0 0 0 1px;
 }
 
-.range-btn.active {
-  border-color: #f0d9b5;
-}
+  .range-btn {}
+  .range-btn.active {}
 
+
+/* ----- Date Input Fields ----- */
 .controls .label {
   font-size: 0.82rem;
   padding: 0 0 0 5px;
 }
 
-.controls input[type="date"] {
-  margin: 0 0 0 2.5px;
-  background: #1a1d27;
-  border: 1px solid #8f8b84;
-  color: #e8eaf6;
-  border-radius: 8px;
-  padding: 5px 10px;
-  font-size: 0.85rem;
-  outline: none;
-  color-scheme: dark;
-}
+  .controls input[type="date"] {
+    margin: 0 0 0 2.5px;
+    background: #1a1d27;
+    border: 1px solid #8f8b84;
+    border-radius: 8px;
+    padding: 7.5px 10px;
+    color: #e8eaf6;
+    font-size: 0.85rem;
+    outline: none;
+    color-scheme: dark;
+    cursor: pointer !important;
+      transition: all 0.15s;
+  }
 
-.controls input[type="date"]:focus {
-  border-color: #f0d9b5;
-}
+  .controls input[type="date"]:hover, 
+  .controls input[type="date"]:focus {
+    border-color: #a6a29c;
+    background: #303442;
+    outline:none;
+  }
 
+
+/* ----- Average Control ----- */
 .smooth-btns {
   flex-grow:2;
-  display: flex;
-  gap: 6px;
   margin: 0 0 0 10px;
 }
 
-.smooth-btns .container-dropdown{
-  display:flex;
-  align-content:middle;
-}
+  .smooth-btns .container-dropdown{
+    display:flex;
+    align-content:center;
 
-.smooth-btns .container-dropdown:after{
-  content:"▼";
-  position:relative;
-  display:inline-block;
-  top:5px;
-  right:20px;
-  font-size:12px;
-  color:#f0f0f0;
-  pointer-events: none;
-}
+  }
 
-.smooth-btns .dropdown{
-  display:block;
-  height:30px !important;
-  width:110px;
-  padding: 0px 10px;
-  border: 1px solid #8f8b84;
-  border-radius:8px;
-  background: #1a1d27;
-  color: #e8eaf6;
-  appearance:none;
-}
+  .smooth-btns .container-dropdown:after{
+    content:"▼";
+    position:relative;
+    display:inline-block;
+    top:10px;
+    right:20px;
+    margin-right: -10px;
+    font-size:12px;
+    color:#f0f0f0;
+    pointer-events: none;
+  }
 
-.smooth-btns .dropdown:focus{
-  outline:none;
-}
+  .smooth-btns .dropdown{
+    display:block;
+    height:35px !important;
+    width:110px;
+    padding: 0px 10px;
+    border: 1px solid #8f8b84;
+    border-radius:8px;
+    background: #1a1d27;
+    color: #e8eaf6;
+    appearance:none;
+    cursor: pointer !important;
+      transition: all 0.15s;
+  }
 
-.smooth-btns .dropdown:open{
-  border-radius:8px 8px 0px 0px !important;
-}
+  .smooth-btns .dropdown:hover,
+  .smooth-btns .dropdown:focus{
+    border-color: #a6a29c;
+    background: #303442;
+    outline:none;
+  }
 
-.smooth-btn {
-  border: 1px solid #8f8b84;
-  border-radius: 8px;
-  padding: 6px 13px;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: all 0.15s;
-}
+  .smooth-btns .dropdown:open{
+    border-radius:8px 8px 0px 0px !important;
+  }
 
-.smooth-btn.active {
-  border-color: #f0d9b5;
-}
 
+/* ----- Metrics Buttons ----- */
 .metric-btns {
-  display: flex;
-  gap: 6px;
   margin-left: auto;
 }
 
-.metric-btn {
-  /*background: #22263a;*/
-  border: 1px solid #8f8b84;
-  /*color: #7b82a0;*/
-  border-radius: 8px;
-  padding: 6px 13px;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-
-.metric-btn.active {
-  /*background: #7c6ff7;*/
-  border-color: #f0d9b5;
-  /*color: #fff;*/
-}
+  .metric-btn {}
+  .metric-btn.active {}
 
 
+
+/* ----- Controls Mobile Media Queries ----- */
   @media (max-width: 767px){
-    .controls {
+    .range-btns,
+    .controls .label,
+    .smooth-btns,
+    .metric-btns{
       flex-basis:100%;
-      justify-content:flex-end;
-    }
-    .controls .range-btns {
-      flex-basis:100%;
-      justify-content:flex-end;
       gap: 2.5%;
       margin:15px 0 0 0;
+      justify-content:flex-end;
     }
-    .controls .range-btns .range-btn{
+
+    .range-btns .range-btn,
+    .metric-btns .metric-btn{
       padding: 10px 17.5px;
+      font-size: 0.8rem;
     }
+  
     .controls .label {
-      flex-basis:100%;
       text-align:right;
     }
-    .controls .label input[type="date"] {
+
+    .controls .label input[type="date"]{
       padding: 9px 17.5px;
-      margin: 0 0 0 10px;
+      font-size: 0.8rem;
     }
+
     .controls .label input[type="date"]::-webkit-calendar-picker-indicator{
-      margin-left: -20px;
+      margin: 0 0 -4px -6px;
     }
-    .controls .smooth-btns {
-      flex-basis:100%;
-      justify-content:flex-end;
-      gap: 2.5%;
-      margin:15px 0 0 0;
+
+    .smooth-btns .dropdown{
+      height:37px !important;
     }
-    .controls .smooth-btns .smooth-btn {
-      padding: 10px 17.5px;
-    }
-    .controls .metric-btns{
-      flex-basis:100%;
-      justify-content:flex-end;
-       gap: 2.5%;
-      margin:15px 0 0 0;
-    }
-    .controls .metric-btns .metric-btn{
-      padding: 10px 17.5px;
-    }
+
   }
 
 
@@ -383,9 +388,10 @@ h1 span {
   background: #1c1814;
   border: 1px solid #4a3828;
   border-radius: 14px;
-  padding: 24px;
+  padding: 72px 32px 48px 32px;
   position: relative;
   height: 50vh;
+  min-height: 600px;
 }
 
 .empty {
