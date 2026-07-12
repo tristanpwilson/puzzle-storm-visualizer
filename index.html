@@ -190,7 +190,8 @@
       let i = 0;
       while (i < data.length) {
         const bucketIndex = Math.floor((data[i].date.getTime() - origin) / bucketMs);
-        const bucketEnd = origin + (bucketIndex + 1) * bucketMs;
+        const bucketStart = origin + bucketIndex * bucketMs;
+        const bucketEnd = bucketStart + bucketMs;
         const group = [];
         while (i < data.length && data[i].date.getTime() < bucketEnd) {
           group.push(data[i]);
@@ -198,7 +199,7 @@
         }
         const avg = v => +(group.reduce((sum, p) => sum + p[v], 0) / group.length).toFixed(1);
         buckets.push({
-          date: group[group.length - 1].date,
+          date: new Date(bucketStart),
           score: avg('score'),
           moves: avg('moves'),
           accuracy: avg('accuracy'),
@@ -207,6 +208,19 @@
         });
       }
       return buckets;
+    }
+
+    function fillGaps(data, windowDays) {
+      if (data.length <= 1) return data;
+      const stepMs = windowDays * 86400000;
+      const dataMap = new Map(data.map(d => [d.date.getTime(), d]));
+      const result = [];
+      const start = data[0].date.getTime();
+      const end = data[data.length - 1].date.getTime();
+      for (let t = start; t <= end; t += stepMs) {
+        result.push(dataMap.get(t) || { date: new Date(t), score: null, moves: null, accuracy: null, combo: null, runs: null });
+      }
+      return result;
     }
 
     function setMetric(m, btn) {
@@ -245,7 +259,7 @@
       document.getElementById('bestShown').textContent = Math.max(...filtered.map(d => d.score));
 
       const cfg = metricConfig[currentMetric];
-      const smoothed = applySmoothing(filtered, currentSmoothing);
+      const smoothed = fillGaps(applySmoothing(filtered, currentSmoothing), currentSmoothing);
       const labels = smoothed.map(d => d.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: '2-digit' }));
       const values = smoothed.map(cfg.key);
 
@@ -265,6 +279,7 @@
             pointBackgroundColor: cfg.color,
             fill: true,
             tension: 0.35,
+            spanGaps: false,
           }]
         },
         options: {
@@ -274,6 +289,7 @@
           plugins: {
             legend: { display: false },
             tooltip: {
+              filter: item => smoothed[item.dataIndex].score !== null,
               backgroundColor: '#1a1d27',
               borderColor: '#2e3350',
               borderWidth: 1,
