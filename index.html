@@ -264,7 +264,7 @@
             pointHoverRadius: 7,
             pointBackgroundColor: cfg.color,
             fill: true,
-            tension: 0.35,
+            tension: 0.30,
           }]
         },
         options: {
@@ -293,6 +293,7 @@
           scales: {
             x: { grid: { color: '#2e335022' }, ticks: { color: '#7b82a0', maxTicksLimit: 10, font: { size: 12 } } },
             y: {
+              min: 0,
               grid: { color: '#2e335044' },
               ticks: { color: '#7b82a0', font: { size: 12 } },
               title: { display: true, text: cfg.label, color: '#7b82a0', font: { size: 14, weight: "bold" } },
