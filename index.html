@@ -60,6 +60,7 @@
           <button class="metric-btn color-beige-desat bg-beige-dark" onclick="setMetric('accuracy', this)">Accuracy</button>
           <button class="metric-btn color-beige-desat bg-beige-dark" onclick="setMetric('combo', this)">Combo</button>
           <button class="metric-btn color-beige-desat bg-beige-dark" onclick="setMetric('runs', this)">Runs</button>
+          <button class="metric-btn color-beige-desat bg-beige-dark" onclick="setMetric('efficiency', this)">Efficiency</button>
         </div>
 
       </div>
@@ -84,11 +85,12 @@
     let currentSmoothing = 1;
 
     const metricConfig = {
-      score:    { label: 'Best Score',   color: '#f0d9b5', key: d => d.score },
-      moves:    { label: 'Moves',        color: '#5eead4', key: d => d.moves },
-      accuracy: { label: 'Accuracy (%)', color: '#f9a8d4', key: d => d.accuracy },
-      combo:    { label: 'Combo',        color: '#fbbf24', key: d => d.combo },
-      runs:     { label: 'Runs',         color: '#a78bfa', key: d => d.runs },
+      score:      { label: 'Best Score',   color: '#f0d9b5', key: d => d.score },
+      moves:      { label: 'Moves',        color: '#5eead4', key: d => d.moves },
+      accuracy:   { label: 'Accuracy (%)', color: '#f9a8d4', key: d => d.accuracy },
+      combo:      { label: 'Combo',        color: '#fbbf24', key: d => d.combo },
+      runs:       { label: 'Runs',         color: '#a78bfa', key: d => d.runs },
+      efficiency: { label: 'Efficiency',   color: '#fb923c', key: d => d.efficiency },
     };
 
     async function getStorm(username, days = 365) {
@@ -127,6 +129,7 @@
             accuracy: +((d.moves - d.errors) / d.moves * 100).toFixed(1),
             combo: d.combo,
             runs: d.runs,
+            efficiency: +(d.score / d.runs).toFixed(2),
           };
         }).sort((a, b) => a.date - b.date);
 
@@ -204,6 +207,7 @@
           accuracy: avg('accuracy'),
           combo: avg('combo'),
           runs: group.reduce((sum, p) => sum + p.runs, 0),
+          efficiency: avg('efficiency'),
         });
       }
       return buckets;
@@ -284,7 +288,7 @@
                 title: ctx => smoothed[ctx[0].dataIndex].date.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' }),
                 label: ctx => {
                   const d = smoothed[ctx.dataIndex];
-                  return [`  Score: ${d.score}`, `  Moves: ${d.moves}   Accuracy: ${d.accuracy}%`, `  Combo: ${d.combo}   Runs: ${d.runs}`];
+                  return [`  Score: ${d.score}`, `  Moves: ${d.moves}   Accuracy: ${d.accuracy}%`, `  Combo: ${d.combo}   Runs: ${d.runs}   Efficiency: ${d.efficiency}`];
                 },
                 labelColor: () => ({ borderColor: 'transparent', backgroundColor: 'transparent' }),
               }
