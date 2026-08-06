@@ -171,10 +171,10 @@
       const i = days === 90 ? 0 : days === 180 ? 1 : days === 365 ? 2 : 3;
       btns[i].classList.add('active', 'color-beige-light', 'bg-beige-med');
       btns[i].classList.remove('color-beige-desat', 'bg-beige-dark');
-      const to = new Date();
-      const from = days ? new Date(to - days * 86400000) : null;
-      document.getElementById('dateFrom').value = from ? from.toISOString().split('T')[0] : '';
-      document.getElementById('dateTo').value = '';
+      const to = new Date(); //Sets 'to' variable to today's date via empty Date function
+      const from = days ? new Date(to - days * 86400000) : (allData.length > 0 ? allData[0].date : null); //Checks if 'days' exists; if it does, calculates 'from;' otherwise, if the dataset still exists, sets 'from' to earliest date; otherwise, null.
+      document.getElementById('dateFrom').value = from ? from.toISOString().split('T')[0] : ''; //Takes 'from' variable and converts to date format that HTML5 input will accept / display
+      document.getElementById('dateTo').value = to ? to.toISOString().split('T')[0] : ''; //Takes 'to' variable and converts to date format that HTML5 input will accept / display
     }
 
     function setSmoothing(days, btn) {
