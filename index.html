@@ -278,17 +278,36 @@
           plugins: {
             legend: { display: false },
             tooltip: {
-              backgroundColor: '#1a1d27',
+              position: 'average',
+              xAlign: 'center',
+              yAlign: 'top',
+              backgroundColor: 'rgba(26, 29, 39,0.8)',
               borderColor: '#2e3350',
               borderWidth: 1,
-              titleColor: '#e8eaf6',
-              bodyColor: '#7b82a0',
-              padding: 12,
+              titleMarginBottom: 10,
+              titleColor: '#d5d7e0',
+              titleFont: {
+                          size: 14,
+                          weight: '700',
+                          lineHeight: 1
+                        },
+              bodySpacing: 8,
+              bodyColor: '#d5d7e0',
+              bodyFont: {
+                          size: 13,
+                          weight: '400',
+                          lineHeight: 1
+                        },
+              padding: {
+                          x: 12,
+                          y: 12,
+                       },
+              displayColors: false,
               callbacks: {
-                title: ctx => smoothed[ctx[0].dataIndex].date.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' }),
+                title: ctx => smoothed[ctx[0].dataIndex].date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
                 label: ctx => {
                   const d = smoothed[ctx.dataIndex];
-                  return [`  Score: ${d.score}`, `  Moves: ${d.moves}   Accuracy: ${d.accuracy}%`, `  Combo: ${d.combo}   Runs: ${d.runs}   Efficiency: ${d.efficiency}`];
+                  return [`Score: ${d.score}`, `Moves: ${d.moves}`, `Accuracy: ${d.accuracy}%`, `Combo: ${d.combo}`, `Runs: ${d.runs}`, `Efficiency: ${d.efficiency}`];
                 },
                 labelColor: () => ({ borderColor: 'transparent', backgroundColor: 'transparent' }),
               }
