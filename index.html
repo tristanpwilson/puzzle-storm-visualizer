@@ -157,10 +157,13 @@
 
       document.getElementById('statsRow').innerHTML = `
         <div class="stat-card"><div class="label">All-time Best</div><div class="value color-beige">${allTimeBest}</div></div>
-                <div class="stat-card"><div class="label">Best (shown)</div><div class="value color-white" id="bestShown">${best}</div></div>
+        <div class="stat-card"><div class="label">Best (shown)</div><div class="value color-white" id="bestShown">${best}</div></div>
         <div class="stat-card"><div class="label">Avg Score</div><div class="value color-beige">${avg}</div></div>
-        <div class="stat-card"><div class="label">Days Played</div><div class="value color-white">${allData.length}</div></div>
+        <div class="stat-card"><div class="label">Avg Score (shown)</div><div class="value color-white" id="avgShown">${avg}</div></div>
+        <div class="stat-card"><div class="label">Days Played</div><div class="value color-beige">${allData.length}</div></div>
+        <div class="stat-card"><div class="label">Days Played (shown)</div><div class="value color-white" id="daysShown">${allData.length}</div></div>
         <div class="stat-card"><div class="label">Total Runs</div><div class="value color-beige">${totalRuns}</div></div>
+        <div class="stat-card"><div class="label">Total Runs (shown)</div><div class="value color-white" id="runsShown">${totalRuns}</div></div>
       `;
     }
 
@@ -247,6 +250,9 @@
       canvas.style.display = 'block';
 
       document.getElementById('bestShown').textContent = Math.max(...filtered.map(d => d.score));
+      document.getElementById('avgShown').textContent = (filtered.reduce((a, d) => a + d.score, 0) / filtered.length).toFixed(1);
+      document.getElementById('daysShown').textContent = filtered.length;
+      document.getElementById('runsShown').textContent = filtered.reduce((a, d) => a + d.runs, 0);
 
       const cfg = metricConfig[currentMetric];
       const smoothed = applySmoothing(filtered, currentSmoothing);
